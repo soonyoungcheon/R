@@ -20,7 +20,7 @@ library(rvest)
 
 # 셀레니엄 구동 테스트
 chrome <- remoteDriver('localhost', 1320, 'chrome')
-# 크롬 브라우저를 원격제어 하기 위해 셀러니엄 서버에 접소
+# 크롬 브라우저를 원격제어 하기 위해 셀러니엄 서버에 접속
 chrome$open()
 # 크롬 브라우저 구동
 
@@ -44,7 +44,7 @@ chrome$getCurrentUrl()
 # 브라우저의 현재 url 출력
 
 html<-chrome$getPageSource()[[1]] 
-# 결과값은 리스트로 반환 인댁스 써줘야함
+# 결과값은 리스트로 반환 인덱스 써줘야함
 
 html
 # 현재 페이지의 html 소스 읽어오기
@@ -123,9 +123,9 @@ for(i in 1:3){
 
 navi<- chrome$findElement('class','navi2')
 navi$clickElement()
-# 단지정보 버튼 추출 후 클ㄹ
+# 단지정보 버튼 추출 후 클릭
 
-# 단지정보 입력릭
+# 단지정보 입력
 
 
 month<- chrome$findElement('css selector','select.combo_MM > option:nth-child(11)')
