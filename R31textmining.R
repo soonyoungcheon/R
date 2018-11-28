@@ -95,9 +95,119 @@ top20 <- df_word %>% arrange(desc(freq)) %>% head(20)
 top20
 
 
+# 3. 워드 클라우드
+# cran.r-project.org/web/packages/wordcloud2
+# install.packages('wordcloud2') mask 작동안함
+devtools::install_github('lchiffon/wordcloud2')
+library(wordcloud2)
+
+head(demoFreq)  # wordcloud2 데모용 데이터
+str(demoFreq)
+
+wordcloud2(demoFreq,size=1,shape = 'star')
+
+
+wordcloud2(top20,size=1, shape = 'star', fontFamily = '궁서')
+
+wordcloud2(demoFreq, size=1, minRotation = -pi/2, maxRotation = -pi/2)
+# minRotation = -pi/2, maxRotation = -pi/2 글자 눕히기
+wordcloud2(top20, size=1, minRotation = -pi/2, maxRotation = -pi/2,fontFamily = 'MD아롱체')
+wordcloud2(top20, size=1, minRotation = -pi/6, maxRotation = -pi/6,fontFamily = 'MD아롱체')
+
+wordcloud2(top20, size=1, color = 'random-light', backgroundColor = 'grey')
+# color 색깔, backgroundColor 배경
+
+# Documents\R\win-liibrary\3.5\wordcloud2
+figPath = system.file("examples/t.png",package = "wordcloud2")
+wordcloud2(demoFreq,figPath = figPath, size=1.5, color = "skyblue")
+wordcloud2(top20,figPath = 'c:/Java/data/h.png', size=1.5, color = "skyblue")
+
+
+
 ex) 2018년 7월, '월드컵'이라는 주제로 트위터에서 각종 텍스트를 수집했다
 이를 분석하고 워드클라우드로 시각화하세요
-wordcup <-read.csv()
+worldcup <-readLines('worldcup2018-07-04.txt', encoding = 'UTF-8')
+head(worldcup)
+
+# 1. 전처리 작업
+worldcup <- gsub('[~?!@#$%^&*_+=<>():/-→]','',worldcup)
+worldcup <- gsub('[a-zA-Z]','',worldcup)
+worldcup <- gsub('[0-9]','',worldcup)
+worldcup <- gsub('[ㅜㅠ]','',worldcup)
+worldcup <- gsub('[ㄱ-ㅎ]','',worldcup)
+worldcup <- gsub('[\\.]','',worldcup)
+worldcup <- gsub('[\\]]','',worldcup)
+worldcup <- gsub('[\\[]','',worldcup)
+worldcup <- gsub('[\\-|\\"]','',worldcup)
+
+# 성인광고 키워드 제거
+worldcup <- gsub('조루|건강|흥분|최저가|치료|발기','',worldcup)
+worldcup <- gsub('비야그라|시알리스|비아그라|성인|여자|용품|구구정|씨알리스|물뽕|부전|클릭','',worldcup)
+worldcup <- gsub('드래곤|부작용','',worldcup)
 
 
+head(worldcup)
+
+# 2. 명사 추출
+nouns <- extractNoun(worldcup)
+head(nouns)
+
+# 추출된 명사의 빈도표 작성
+wdc <- table(unlist(nouns))
+head(wdc)
+
+df_word<-data.frame(wdc, stringsAsFactors = F)
+
+df_word <- rename(df_word, word=Var1, freq=Freq)
+head(df_word)
+
+df_word$word <- as.character(df_word$word)
+df_word <- filter(df_word, nchar(word)>=2)
+
+top35 <- df_word %>% arrange(desc(freq)) %>% head(35)
+top35
+top35[1,2]<-950
+# 월드컵이라는 글자가 빈도수가 다른 단어에 비해 현저히 많기 때문에
+# 수치를 적절히 조정함 : 3580 -> 950
+
+# 3. 워드 클라우드
+wordcloud2(top35,figPath = 'c:/Java/data/h.png', size=1.5, color = "skyblue")
+
+
+
+ex) 토지 1권에 쓰인 텍스트를 분석하고 워드클라우드로 시각화하세요
+toji <- readLines('c:/Java/data/토지1부1권.txt')
+head(toji)
+
+# 1.전처리 
+toji <- gsub('[~?!@%#()_+=<>^.]','',toji)
+toji <- gsub('[0-9]','',toji)
+toji <- gsub("[\\']","",toji)
+toji <- gsub('[ㄱ-ㅎ]','',toji)
+toji <- gsub('[\\-]','',toji)
+toji <- gsub('[a-zA-Z]','',toji)
+toji <- gsub('[\\"]','',toji)
+toji <- gsub('××','',toji)
+toji <- gsub('[""]','',toji)
+
+# 2. 명사 추출
+nouns <- extractNoun(toji)
+head(nouns)
+wdc <- table(unlist(nouns))
+
+df_word <- as.data.frame(wdc, stringsAsFactors = F)
+
+df_word <- rename(df_word, word=Var1, freq=Freq)
+head(df_wdc)
+
+df_word$word <- as.character(df_word$word)
+df_word<-filter(df_word,nchar(word)>=2)
+
+top50 <- df_word %>% arrange(desc(freq)) %>% head(50)
+
+top50
+
+# 3. 워드 크라우드
+
+wordcloud2(top50,figPath = 'c:/Java/data/h.png', size=1.5, color = "skyblue")
 
