@@ -47,5 +47,19 @@ library(httr)
 
 url <- 'http://www.hanbit.co.kr/store/store_submain.html'
 html <- GET(url, add_headers(.headers=c('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36')))
+
+# referal ??
+
 content(html)
 content(html, 'text')
+title <- html_nodes(content(html), 'p.book_tit')
+html_text(title)
+
+
+# 명령어 간단하게 사용하기
+# %>% 앞에서 입력값을 출력값으로!
+html <- read_html(url) %>% html_nodes('p.book_tit') %>% html_text 
+title
+
+
+
