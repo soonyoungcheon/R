@@ -141,7 +141,7 @@ worldcup <- gsub('[\\[]','',worldcup)
 worldcup <- gsub('[\\-|\\"]','',worldcup)
 
 # 성인광고 키워드 제거
-worldcup <- gsub('조루|건강|흥분|최저가|치료|발기','',worldcup)
+worldcup <- gsub('조루|건강|흥분|최저가|치료|발기','',worldc.up)
 worldcup <- gsub('비야그라|시알리스|비아그라|성인|여자|용품|구구정|씨알리스|물뽕|부전|클릭','',worldcup)
 worldcup <- gsub('드래곤|부작용','',worldcup)
 
