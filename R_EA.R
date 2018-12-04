@@ -110,7 +110,6 @@ score <- sum(pos.matches) - sum(neg.matches)
 
 
 }, pos.word, neg.word, .progress=.progress)
- scores.df <- data.frame(score=scores, text=sentences)
 
  # 내부 함수 실행 결과를 데이터프레임으로 변환
  scores.df<- data.frame(score=scores, text= sentences)
@@ -129,3 +128,67 @@ hist(apple.score$score)
 # 감성분석 결과를 그래프로 출력
 # 0보다 크면 긍정의 의미
  
+
+
+
+
+# 트윗데이터 일부 확인
+samsung.tweets[1:5]
+
+# 첫번째 트윗데이터의 상세정보 출력
+samsung <- samsung.tweets[[1]]
+samsung$getScreenName()   # 작성자
+samsung$getText()    # 본문 (트윗)
+
+
+# 모든 트윗에서 본문만 추출하는 함수 생성
+samsung.text <- lapply(samsung.tweets, function(t){t$getText()})
+head(samsung.text,3)
+
+setwd('c:/Java/data/Senti_data')
+# 감정분석을 위한 감성사전을 불러옴
+pos.word <- scan('positive-words.txt', what = 'character', comment.char = ';')
+pos.word <- scan('negative-words.txt', what = 'character', comment.char = ';')
+
+
+# 트윗내용을 바탕으로 감성기반 분석 후 점수 출력
+score.sentiment <- function(sentences,pos.word,neg.word,.progress='none'){
+  
+  library(dplyr)
+  library(stringr)
+  
+  scores <- laply(sentences, function(sentence, pos.word, neg.word){
+    
+    sentence <- gsub('[[:punct:]]', "", sentence)
+    sentence <- gsub('[[:cntrl:]]', "", sentence)
+    sentence <- gsub('\\d+', "", sentence)
+    
+    sentence <- tolower(sentence)
+    word.list <- str_split(sentence, '\\s+')
+    words <- unlist(word.list)
+    
+    pos.matches <- match(words, pos.word)
+    neg.matches <- match(words, neg.word)
+    
+                    
+    pos.matches <- !is.na(pos.matches)
+    neg.matches <- !is.na(neg.matches)
+    
+    score <- sum(pos.matches) - sum(neg.matches)
+    return(score)
+    
+  }, pos.word, neg.word, .progress=.progress)
+    
+     scores.df <- data.frame(score=scores, text=sentences)
+    
+  
+  return(scores.df)
+}
+
+
+samsung.score <- score.sentiment(
+  samsung.text,pos.word,neg.word, .progress = 'text'
+)
+
+hist(samsung.score$score)
+
