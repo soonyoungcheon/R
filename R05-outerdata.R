@@ -8,8 +8,7 @@ library(RMySQL)
 
 
 mysqlconn<-dbConnect(MySQL(),
-                    user='joojoo', password = '123456', dbname= 'joojoo',
-                    host= '13.125.229.88')
+                    user='', password = '', dbname= '',
 
 result <- dbSendQuery(mysqlconn,'select*from Book')
 

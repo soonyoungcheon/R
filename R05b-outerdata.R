@@ -8,8 +8,8 @@ library(RMySQL)
 
 
 mysqlconn<-dbConnect(MySQL(),
-                    user='nonno', password = '123456', dbname= 'nonno',
-                    host= '13.125.208.64')
+                    user='', password = '', dbname= '',
+                    host= '아이피')
 
 # 질의 생성 후 결과 집합 계정
 
@@ -45,7 +45,7 @@ library(RJDBC)
 OJDBC <- JDBC(driverClass = 'oracle.jdbc.driver.OracleDriver', classPath = 'C:/Java/jdbc/ojdbc7.jar')
 # 오라클 JDBC 드라이버 등록
 
-oracleconn <- dbConnect(OJDBC,'jdbc:oracle:thin:@//13.209.64.4:1521/XE', 'hr', 'hr')
+oracleconn <- dbConnect(OJDBC,'jdbc:oracle:thin:@//아이피:1521/XE', 'db명', '비밀번호')
 
 sql <- 'select*from employees'
 
